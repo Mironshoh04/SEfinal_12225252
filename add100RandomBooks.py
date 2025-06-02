@@ -47,3 +47,26 @@ for i in range(4, 130):
     book = {"id":i, "title": fakeTitle, "author": fakeAuthor, "isbn": fakeISBN}
     # add the new random "fake" book using the API
     addBook(book, apiKey) 
+
+
+def delBook(id):
+    r = requests.delete(
+        f"{APIHOST}/api/v1/books/{id}", 
+        headers = {
+            "Accept":"application/json",
+            "X-API-Key": apiKey
+        },
+    )
+
+    if r.status_code == 200:
+        print(f"Book ID {id} deleted.")
+    else:
+        raise Exception(f"Error code {r.status_code} and text {r.text}, while trying to delete book {id}.")
+
+# Delete the first 5 books
+for i in range(1, 6):
+    delBook(i)
+
+# Delete the last 5 books (assuming books 4-129 were added)
+for i in range(125, 130):
+    delBook(i)
